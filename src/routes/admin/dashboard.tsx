@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { getAllShops, createShop, resetShopPassword, deleteShop } from "@/lib/platform.functions";
 import { Shield, LogOut, Plus, CreditCard as Edit2, Trash2, X, CircleAlert as AlertCircle, Check, Building2, Phone, Mail, Calendar, Lock } from "lucide-react";
 import { format } from "date-fns";
 
@@ -52,9 +54,7 @@ function AdminDashboardPage() {
     if (checking || !masterKey) return;
     (async () => {
       try {
-        const res = await import("@/lib/platform.functions").then((m) =>
-          m.getAllShops({ data: { masterKey } })
-        );
+        const res = await getAllShops({ data: { masterKey } });
         setShops(res || []);
       } catch (e) {
         console.error(e);
@@ -71,9 +71,7 @@ function AdminDashboardPage() {
 
   const refresh = async () => {
     if (!masterKey) return;
-    const res = await import("@/lib/platform.functions").then((m) =>
-      m.getAllShops({ data: { masterKey } })
-    );
+    const res = await getAllShops({ data: { masterKey } });
     setShops(res || []);
   };
 
@@ -298,8 +296,7 @@ function CreateShopButton({
     }
     setSaving(true);
     try {
-      await import("@/lib/platform.functions").then((m) =>
-        m.createShop({ data: {
+      await createShop({ data: {
           masterKey,
           name: form.name,
           slug: form.slug,
@@ -308,8 +305,7 @@ function CreateShopButton({
           password: form.password,
           banner_url_1: form.banner_url_1 || null,
           banner_url_2: form.banner_url_2 || null,
-        } })
-      );
+        } });
       setOpen(false);
       setForm({
         name: "",
@@ -557,9 +553,7 @@ function ResetPasswordModal({
     }
     setSaving(true);
     try {
-      await import("@/lib/platform.functions").then((m) =>
-        m.resetShopPassword({ data: { masterKey, shopId: shop.id, newPassword } })
-      );
+      await resetShopPassword({ data: { masterKey, shopId: shop.id, newPassword } });
       setNewPassword("");
       setConfirm("");
       onClose();
@@ -685,9 +679,7 @@ function DeleteShopModal({
     }
     setDeleting(true);
     try {
-      await import("@/lib/platform.functions").then((m) =>
-        m.deleteShop({ data: { masterKey, shopId: shop.id, slug: shop.slug } })
-      );
+      await deleteShop({ data: { masterKey, shopId: shop.id, slug: shop.slug } });
       onClose();
       onSave();
     } catch (e: any) {

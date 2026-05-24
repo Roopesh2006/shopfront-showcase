@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { getShopSettings, updateShopSettings, changeShopPassword, getProducts, createProduct, updateProduct, deleteProduct, getOffers, setOffer, removeOffer } from "@/lib/dashboard.functions";
 import { Settings, Package, Tag, LogOut, Upload, Save, Plus, CreditCard as Edit3, Trash2, X, CircleAlert as AlertCircle, Check, Clock } from "lucide-react";
 import { useCountdown } from "@/lib/useCountdown";
 
@@ -161,9 +163,7 @@ function SettingsTab({ session }: { session: NonNullable<Session> }) {
   useEffect(() => {
     (async () => {
       try {
-        const res = await import("@/lib/dashboard.functions").then((m) =>
-          m.getShopSettings({ data: { shopId: session.shopId, shopSlug: session.shopSlug } })
-        );
+        const res = await getShopSettings({ data: { shopId: session.shopId, shopSlug: session.shopSlug } });
         setData(res);
       } catch (e) {
         console.error(e);
@@ -184,8 +184,7 @@ function SettingsTab({ session }: { session: NonNullable<Session> }) {
       if (error) throw error;
       const { data: publicUrl } = supabase.storage.from("lp-assets").getPublicUrl(path);
       const url = publicUrl.publicUrl;
-      const dashboard = await import("@/lib/dashboard.functions");
-      await dashboard.updateShopSettings({ data: {
+      await updateShopSettings({ data: {
         ...data,
         shopId: session.shopId,
         shopSlug: session.shopSlug,
@@ -207,8 +206,7 @@ function SettingsTab({ session }: { session: NonNullable<Session> }) {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const dashboard = await import("@/lib/dashboard.functions");
-      await dashboard.updateShopSettings({ data: {
+      await updateShopSettings({ data: {
         shopId: session.shopId,
         shopSlug: session.shopSlug,
         name: data.name,
@@ -237,8 +235,7 @@ function SettingsTab({ session }: { session: NonNullable<Session> }) {
       return;
     }
     try {
-      const dashboard = await import("@/lib/dashboard.functions");
-      await dashboard.changeShopPassword({ data: {
+      await changeShopPassword({ data: {
         shopId: session.shopId,
         shopSlug: session.shopSlug,
         currentPassword: pwForm.current,
@@ -448,9 +445,7 @@ function InventoryTab({ session }: { session: NonNullable<Session> }) {
   useEffect(() => {
     (async () => {
       try {
-        const res = await import("@/lib/dashboard.functions").then((m) =>
-          m.getProducts({ data: { shopId: session.shopId, shopSlug: session.shopSlug } })
-        );
+        const res = await getProducts({ data: { shopId: session.shopId, shopSlug: session.shopSlug } });
         setProducts(res || []);
       } catch (e) {
         console.error(e);
@@ -461,9 +456,7 @@ function InventoryTab({ session }: { session: NonNullable<Session> }) {
   }, [session]);
 
   const refresh = async () => {
-    const res = await import("@/lib/dashboard.functions").then((m) =>
-      m.getProducts({ data: { shopId: session.shopId, shopSlug: session.shopSlug } })
-    );
+    const res = await getProducts({ data: { shopId: session.shopId, shopSlug: session.shopSlug } });
     setProducts(res || []);
   };
 
@@ -473,9 +466,7 @@ function InventoryTab({ session }: { session: NonNullable<Session> }) {
       return;
     }
     try {
-      await import("@/lib/dashboard.functions").then((m) =>
-        m.deleteProduct({ data: { shopId: session.shopId, shopSlug: session.shopSlug, productId: deleteConfirm! } })
-      );
+      await deleteProduct({ data: { shopId: session.shopId, shopSlug: session.shopSlug, productId: deleteConfirm! } });
       setProducts(products.filter((p) => p.id !== deleteConfirm));
       setDeleteConfirm(null);
       setDeleteInput("");
@@ -695,9 +686,7 @@ function OffersTab({ session }: { session: NonNullable<Session> }) {
   useEffect(() => {
     (async () => {
       try {
-        const res = await import("@/lib/dashboard.functions").then((m) =>
-          m.getOffers({ data: { shopId: session.shopId, shopSlug: session.shopSlug } })
-        );
+        const res = await getOffers({ data: { shopId: session.shopId, shopSlug: session.shopSlug } });
         setProducts(res || []);
       } catch (e) {
         console.error(e);
@@ -708,24 +697,20 @@ function OffersTab({ session }: { session: NonNullable<Session> }) {
   }, [session]);
 
   const refresh = async () => {
-    const res = await import("@/lib/dashboard.functions").then((m) =>
-      m.getOffers({ data: { shopId: session.shopId, shopSlug: session.shopSlug } })
-    );
+    const res = await getOffers({ data: { shopId: session.shopId, shopSlug: session.shopSlug } });
     setProducts(res || []);
   };
 
   const handleSetOffer = async (productId: string) => {
     setSaving(true);
     try {
-      await import("@/lib/dashboard.functions").then((m) =>
-        m.setOffer({ data: {
+      await setOffer({ data: {
           shopId: session.shopId,
           shopSlug: session.shopSlug,
           productId,
           discount_price: parseFloat(offerForm.discount_price),
           expires_at: new Date(offerForm.expires_at).toISOString(),
-        } })
-      );
+        } });
       setOfferModal(null);
       setOfferForm({ discount_price: "", expires_at: "" });
       refresh();
@@ -739,9 +724,7 @@ function OffersTab({ session }: { session: NonNullable<Session> }) {
   const handleRemoveOffer = async (productId: string) => {
     if (!confirm("Remove the offer for this product?")) return;
     try {
-      await import("@/lib/dashboard.functions").then((m) =>
-        m.removeOffer({ data: { shopId: session.shopId, shopSlug: session.shopSlug, productId } })
-      );
+      await removeOffer({ data: { shopId: session.shopId, shopSlug: session.shopSlug, productId } });
       refresh();
     } catch (e: any) {
       alert("Failed to remove offer: " + (e.message || "Unknown error"));
@@ -1048,9 +1031,8 @@ function ProductDrawer({
     }
     setSaving(true);
     try {
-      const dashboard = await import("@/lib/dashboard.functions");
       if (product) {
-        await dashboard.updateProduct({ data: {
+        await updateProduct({ data: {
           shopId: session.shopId,
           shopSlug: session.shopSlug,
           productId: product.id,
@@ -1065,7 +1047,7 @@ function ProductDrawer({
           banner_url_2: form.banner_url_2 || null,
         } });
       } else {
-        await dashboard.createProduct({ data: {
+        await createProduct({ data: {
           shopId: session.shopId,
           shopSlug: session.shopSlug,
           name: form.name,

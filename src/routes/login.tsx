@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { motion } from "framer-motion";
 import { Lock, User, CircleAlert as AlertCircle } from "lucide-react";
 import { loginShop } from "@/lib/auth.functions";
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
+  const doLogin = useServerFn(loginShop);
   const [slug, setSlug] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +25,7 @@ function LoginPage() {
     setError(null);
     setLoading(true);
     try {
-      const result = await loginShop({ slug, password });
+      const result = await doLogin({ data: { slug: slug.trim().toLowerCase(), password } });
       localStorage.setItem(
         "sp.session",
         JSON.stringify({

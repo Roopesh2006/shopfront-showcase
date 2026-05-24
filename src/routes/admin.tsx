@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { motion } from "framer-motion";
 import { Key, CircleAlert as AlertCircle, Shield } from "lucide-react";
 import { loginAdmin } from "@/lib/auth.functions";
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/admin")({
 
 function AdminLoginPage() {
   const navigate = useNavigate();
+  const doLogin = useServerFn(loginAdmin);
   const [masterKey, setMasterKey] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -22,7 +24,7 @@ function AdminLoginPage() {
     setError(null);
     setLoading(true);
     try {
-      await loginAdmin({ masterKey });
+      await doLogin({ data: { masterKey } });
       sessionStorage.setItem("sp.admin", JSON.stringify({ admin: true }));
       navigate({ to: "/admin/dashboard" });
     } catch (err: any) {
