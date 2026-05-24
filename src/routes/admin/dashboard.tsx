@@ -1,21 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Shield,
-  LogOut,
-  Plus,
-  Edit2,
-  Trash2,
-  X,
-  AlertCircle,
-  Check,
-  Building2,
-  Phone,
-  Mail,
-  Calendar,
-  Lock,
-} from "lucide-react";
+import { Shield, LogOut, Plus, CreditCard as Edit2, Trash2, X, CircleAlert as AlertCircle, Check, Building2, Phone, Mail, Calendar, Lock } from "lucide-react";
 import { format } from "date-fns";
 
 export const Route = createFileRoute("/admin/dashboard")({

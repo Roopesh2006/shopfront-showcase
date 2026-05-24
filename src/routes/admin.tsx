@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Key, AlertCircle, Shield } from "lucide-react";
+import { Key, CircleAlert as AlertCircle, Shield } from "lucide-react";
 import { loginAdmin } from "@/lib/auth.functions";
 
 export const Route = createFileRoute("/admin")({

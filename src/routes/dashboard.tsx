@@ -1,21 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Settings,
-  Package,
-  Tag,
-  LogOut,
-  Upload,
-  Save,
-  Plus,
-  Edit3,
-  Trash2,
-  X,
-  AlertCircle,
-  Check,
-  Clock,
-} from "lucide-react";
+import { Settings, Package, Tag, LogOut, Upload, Save, Plus, CreditCard as Edit3, Trash2, X, CircleAlert as AlertCircle, Check, Clock } from "lucide-react";
 import { useCountdown } from "@/lib/useCountdown";
 
 type Session = { shopId: string; shopSlug: string; shopName: string } | null;

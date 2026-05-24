@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Lock, User, AlertCircle } from "lucide-react";
+import { Lock, User, CircleAlert as AlertCircle } from "lucide-react";
 import { loginShop } from "@/lib/auth.functions";
 
 export const Route = createFileRoute("/login")({
