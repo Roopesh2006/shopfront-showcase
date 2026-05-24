@@ -25,7 +25,7 @@ function AdminLoginPage() {
     setLoading(true);
     try {
       await doLogin({ data: { masterKey } });
-      sessionStorage.setItem("sp.admin", JSON.stringify({ admin: true }));
+      sessionStorage.setItem("sp.admin", JSON.stringify({ admin: true, masterKey }));
       navigate({ to: "/admin/dashboard" });
     } catch (err: any) {
       setError(err.message || "Login failed");
