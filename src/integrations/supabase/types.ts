@@ -14,7 +14,124 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      lp_offers: {
+        Row: {
+          created_at: string
+          discount_price: number
+          expires_at: string
+          id: string
+          product_id: string
+        }
+        Insert: {
+          created_at?: string
+          discount_price: number
+          expires_at: string
+          id?: string
+          product_id: string
+        }
+        Update: {
+          created_at?: string
+          discount_price?: number
+          expires_at?: string
+          id?: string
+          product_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lp_offers_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "lp_products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lp_products: {
+        Row: {
+          banner_url_1: string | null
+          banner_url_2: string | null
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          original_price: number | null
+          rate: number
+          shop_id: string
+          slug: string
+          sort_order: number
+        }
+        Insert: {
+          banner_url_1?: string | null
+          banner_url_2?: string | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          original_price?: number | null
+          rate?: number
+          shop_id: string
+          slug: string
+          sort_order?: number
+        }
+        Update: {
+          banner_url_1?: string | null
+          banner_url_2?: string | null
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          original_price?: number | null
+          rate?: number
+          shop_id?: string
+          slug?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lp_products_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "lp_shop"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lp_shop: {
+        Row: {
+          banner_url_1: string | null
+          banner_url_2: string | null
+          created_at: string
+          id: string
+          name: string
+          shop_email: string | null
+          shop_phone_number: string | null
+          slug: string
+        }
+        Insert: {
+          banner_url_1?: string | null
+          banner_url_2?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          shop_email?: string | null
+          shop_phone_number?: string | null
+          slug: string
+        }
+        Update: {
+          banner_url_1?: string | null
+          banner_url_2?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          shop_email?: string | null
+          shop_phone_number?: string | null
+          slug?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
