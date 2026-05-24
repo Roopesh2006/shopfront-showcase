@@ -162,7 +162,7 @@ function SettingsTab({ session }: { session: NonNullable<Session> }) {
     (async () => {
       try {
         const res = await import("@/lib/dashboard.functions").then((m) =>
-          m.getShopSettings({ shopId: session.shopId, shopSlug: session.shopSlug })
+          m.getShopSettings({ data: { shopId: session.shopId, shopSlug: session.shopSlug } })
         );
         setData(res);
       } catch (e) {
@@ -185,12 +185,12 @@ function SettingsTab({ session }: { session: NonNullable<Session> }) {
       const { data: publicUrl } = supabase.storage.from("lp-assets").getPublicUrl(path);
       const url = publicUrl.publicUrl;
       const dashboard = await import("@/lib/dashboard.functions");
-      await dashboard.updateShopSettings({
+      await dashboard.updateShopSettings({ data: {
         ...data,
         shopId: session.shopId,
         shopSlug: session.shopSlug,
         [`banner_url_${bannerNum}`]: url,
-      });
+      } });
       setData((d: any) => ({ ...d, [`banner_url_${bannerNum}`]: url }));
     } catch (e: any) {
       alert("Upload failed: " + (e.message || "Unknown error"));
@@ -208,7 +208,7 @@ function SettingsTab({ session }: { session: NonNullable<Session> }) {
     setSaving(true);
     try {
       const dashboard = await import("@/lib/dashboard.functions");
-      await dashboard.updateShopSettings({
+      await dashboard.updateShopSettings({ data: {
         shopId: session.shopId,
         shopSlug: session.shopSlug,
         name: data.name,
@@ -216,7 +216,7 @@ function SettingsTab({ session }: { session: NonNullable<Session> }) {
         shop_email: data.shop_email,
         banner_url_1: data.banner_url_1,
         banner_url_2: data.banner_url_2,
-      });
+      } });
       alert("Settings saved!");
     } catch (e: any) {
       alert("Failed to save: " + (e.message || "Unknown error"));
@@ -238,12 +238,12 @@ function SettingsTab({ session }: { session: NonNullable<Session> }) {
     }
     try {
       const dashboard = await import("@/lib/dashboard.functions");
-      await dashboard.changeShopPassword({
+      await dashboard.changeShopPassword({ data: {
         shopId: session.shopId,
         shopSlug: session.shopSlug,
         currentPassword: pwForm.current,
         newPassword: pwForm.new,
-      });
+      } });
       setPwForm({ current: "", new: "", confirm: "" });
       setPwSuccess(true);
     } catch (e: any) {
@@ -449,7 +449,7 @@ function InventoryTab({ session }: { session: NonNullable<Session> }) {
     (async () => {
       try {
         const res = await import("@/lib/dashboard.functions").then((m) =>
-          m.getProducts({ shopId: session.shopId, shopSlug: session.shopSlug })
+          m.getProducts({ data: { shopId: session.shopId, shopSlug: session.shopSlug } })
         );
         setProducts(res || []);
       } catch (e) {
@@ -462,7 +462,7 @@ function InventoryTab({ session }: { session: NonNullable<Session> }) {
 
   const refresh = async () => {
     const res = await import("@/lib/dashboard.functions").then((m) =>
-      m.getProducts({ shopId: session.shopId, shopSlug: session.shopSlug })
+      m.getProducts({ data: { shopId: session.shopId, shopSlug: session.shopSlug } })
     );
     setProducts(res || []);
   };
@@ -474,7 +474,7 @@ function InventoryTab({ session }: { session: NonNullable<Session> }) {
     }
     try {
       await import("@/lib/dashboard.functions").then((m) =>
-        m.deleteProduct({ shopId: session.shopId, shopSlug: session.shopSlug, productId: deleteConfirm! })
+        m.deleteProduct({ data: { shopId: session.shopId, shopSlug: session.shopSlug, productId: deleteConfirm! } })
       );
       setProducts(products.filter((p) => p.id !== deleteConfirm));
       setDeleteConfirm(null);
@@ -696,7 +696,7 @@ function OffersTab({ session }: { session: NonNullable<Session> }) {
     (async () => {
       try {
         const res = await import("@/lib/dashboard.functions").then((m) =>
-          m.getOffers({ shopId: session.shopId, shopSlug: session.shopSlug })
+          m.getOffers({ data: { shopId: session.shopId, shopSlug: session.shopSlug } })
         );
         setProducts(res || []);
       } catch (e) {
@@ -709,7 +709,7 @@ function OffersTab({ session }: { session: NonNullable<Session> }) {
 
   const refresh = async () => {
     const res = await import("@/lib/dashboard.functions").then((m) =>
-      m.getOffers({ shopId: session.shopId, shopSlug: session.shopSlug })
+      m.getOffers({ data: { shopId: session.shopId, shopSlug: session.shopSlug } })
     );
     setProducts(res || []);
   };
@@ -718,13 +718,13 @@ function OffersTab({ session }: { session: NonNullable<Session> }) {
     setSaving(true);
     try {
       await import("@/lib/dashboard.functions").then((m) =>
-        m.setOffer({
+        m.setOffer({ data: {
           shopId: session.shopId,
           shopSlug: session.shopSlug,
           productId,
           discount_price: parseFloat(offerForm.discount_price),
           expires_at: new Date(offerForm.expires_at).toISOString(),
-        })
+        } })
       );
       setOfferModal(null);
       setOfferForm({ discount_price: "", expires_at: "" });
@@ -740,7 +740,7 @@ function OffersTab({ session }: { session: NonNullable<Session> }) {
     if (!confirm("Remove the offer for this product?")) return;
     try {
       await import("@/lib/dashboard.functions").then((m) =>
-        m.removeOffer({ shopId: session.shopId, shopSlug: session.shopSlug, productId })
+        m.removeOffer({ data: { shopId: session.shopId, shopSlug: session.shopSlug, productId } })
       );
       refresh();
     } catch (e: any) {
@@ -1050,7 +1050,7 @@ function ProductDrawer({
     try {
       const dashboard = await import("@/lib/dashboard.functions");
       if (product) {
-        await dashboard.updateProduct({
+        await dashboard.updateProduct({ data: {
           shopId: session.shopId,
           shopSlug: session.shopSlug,
           productId: product.id,
@@ -1063,9 +1063,9 @@ function ProductDrawer({
           sort_order: parseInt(form.sort_order) || 0,
           banner_url_1: form.banner_url_1 || null,
           banner_url_2: form.banner_url_2 || null,
-        });
+        } });
       } else {
-        await dashboard.createProduct({
+        await dashboard.createProduct({ data: {
           shopId: session.shopId,
           shopSlug: session.shopSlug,
           name: form.name,
@@ -1077,7 +1077,7 @@ function ProductDrawer({
           sort_order: parseInt(form.sort_order) || 0,
           banner_url_1: form.banner_url_1 || null,
           banner_url_2: form.banner_url_2 || null,
-        });
+        } });
       }
       onSave();
       onClose();

@@ -53,7 +53,7 @@ function AdminDashboardPage() {
     (async () => {
       try {
         const res = await import("@/lib/platform.functions").then((m) =>
-          m.getAllShops({ masterKey })
+          m.getAllShops({ data: { masterKey } })
         );
         setShops(res || []);
       } catch (e) {
@@ -72,7 +72,7 @@ function AdminDashboardPage() {
   const refresh = async () => {
     if (!masterKey) return;
     const res = await import("@/lib/platform.functions").then((m) =>
-      m.getAllShops({ masterKey })
+      m.getAllShops({ data: { masterKey } })
     );
     setShops(res || []);
   };
@@ -299,7 +299,7 @@ function CreateShopButton({
     setSaving(true);
     try {
       await import("@/lib/platform.functions").then((m) =>
-        m.createShop({
+        m.createShop({ data: {
           masterKey,
           name: form.name,
           slug: form.slug,
@@ -308,7 +308,7 @@ function CreateShopButton({
           password: form.password,
           banner_url_1: form.banner_url_1 || null,
           banner_url_2: form.banner_url_2 || null,
-        })
+        } })
       );
       setOpen(false);
       setForm({
@@ -558,7 +558,7 @@ function ResetPasswordModal({
     setSaving(true);
     try {
       await import("@/lib/platform.functions").then((m) =>
-        m.resetShopPassword({ masterKey, shopId: shop.id, newPassword })
+        m.resetShopPassword({ data: { masterKey, shopId: shop.id, newPassword } })
       );
       setNewPassword("");
       setConfirm("");
@@ -686,7 +686,7 @@ function DeleteShopModal({
     setDeleting(true);
     try {
       await import("@/lib/platform.functions").then((m) =>
-        m.deleteShop({ masterKey, shopId: shop.id, slug: shop.slug })
+        m.deleteShop({ data: { masterKey, shopId: shop.id, slug: shop.slug } })
       );
       onClose();
       onSave();
