@@ -101,6 +101,7 @@ export type Database = {
       }
       lp_shop: {
         Row: {
+          admin_password_hash: string | null
           banner_url_1: string | null
           banner_url_2: string | null
           created_at: string
@@ -111,6 +112,7 @@ export type Database = {
           slug: string
         }
         Insert: {
+          admin_password_hash?: string | null
           banner_url_1?: string | null
           banner_url_2?: string | null
           created_at?: string
@@ -121,6 +123,7 @@ export type Database = {
           slug: string
         }
         Update: {
+          admin_password_hash?: string | null
           banner_url_1?: string | null
           banner_url_2?: string | null
           created_at?: string
