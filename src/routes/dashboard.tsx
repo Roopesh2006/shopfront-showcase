@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getShopSettings, updateShopSettings, changeShopPassword, getProducts, createProduct, updateProduct, deleteProduct, getOffers, setOffer, removeOffer } from "@/lib/dashboard.functions";
-import { Settings, Package, Tag, LogOut, Upload, Save, Plus, CreditCard as Edit3, Trash2, X, CircleAlert as AlertCircle, Check, Clock } from "lucide-react";
+import { Settings, Package, Tag, LogOut, Upload, Save, Plus, CreditCard as Edit3, Trash2, X, CircleAlert as AlertCircle, Check, Clock, Lock } from "lucide-react";
 import { useCountdown } from "@/lib/useCountdown";
 
 type Session = { shopId: string; shopSlug: string; shopName: string } | null;
