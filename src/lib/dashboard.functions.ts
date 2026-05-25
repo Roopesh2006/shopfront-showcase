@@ -132,7 +132,7 @@ export const createProduct = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     await assertShop(data.shopId, data.shopSlug);
-    const { error } = await admin.from("lp_products").insert({
+    const { error } = await getAdmin().from("lp_products").insert({
       shop_id: data.shopId,
       name: data.name,
       slug: data.slug,
@@ -259,7 +259,7 @@ export const setOffer = createServerFn({ method: "POST" })
         .eq("id", existing.id);
       error = result.error;
     } else {
-      const result = await admin.from("lp_offers").insert({
+      const result = await getAdmin().from("lp_offers").insert({
         product_id: data.productId,
         discount_price: data.discount_price,
         expires_at: data.expires_at,
@@ -276,7 +276,7 @@ export const removeOffer = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     await assertShop(data.shopId, data.shopSlug);
-    const { error } = await admin.from("lp_offers").delete().eq("product_id", data.productId);
+    const { error } = await getAdmin().from("lp_offers").delete().eq("product_id", data.productId);
     if (error) throw new Error("Failed to remove offer");
     return { ok: true };
   });
