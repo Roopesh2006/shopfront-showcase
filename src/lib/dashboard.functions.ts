@@ -11,7 +11,7 @@ function getAdmin() {
 }
 
 async function assertShop(shopId: string, shopSlug: string) {
-  const { data } = await admin
+  const { data } = await getAdmin()
     .from("lp_shop")
     .select("id, slug")
     .eq("id", shopId)
@@ -28,7 +28,7 @@ export const getShopSettings = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     await assertShop(data.shopId, data.shopSlug);
-    const { data: shop, error } = await admin
+    const { data: shop, error } = await getAdmin()
       .from("lp_shop")
       .select("id, name, slug, shop_phone_number, shop_email, banner_url_1, banner_url_2")
       .eq("id", data.shopId)
@@ -53,7 +53,7 @@ export const updateShopSettings = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     await assertShop(data.shopId, data.shopSlug);
-    const { error } = await admin
+    const { error } = await getAdmin()
       .from("lp_shop")
       .update({
         name: data.name,
@@ -79,7 +79,7 @@ export const changeShopPassword = createServerFn({ method: "POST" })
       .parse(d)
   )
   .handler(async ({ data }) => {
-    const { data: shop } = await admin
+    const { data: shop } = await getAdmin()
       .from("lp_shop")
       .select("id, admin_password_hash")
       .eq("id", data.shopId)
@@ -90,7 +90,7 @@ export const changeShopPassword = createServerFn({ method: "POST" })
     if (!ok) throw new Error("Current password is incorrect");
 
     const newHash = await bcrypt.hash(data.newPassword, 12);
-    const { error } = await admin
+    const { error } = await getAdmin()
       .from("lp_shop")
       .update({ admin_password_hash: newHash })
       .eq("id", data.shopId);
@@ -103,7 +103,7 @@ export const getProducts = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => z.object({ shopId: z.string(), shopSlug: z.string() }).parse(d))
   .handler(async ({ data }) => {
     await assertShop(data.shopId, data.shopSlug);
-    const { data: products, error } = await admin
+    const { data: products, error } = await getAdmin()
       .from("lp_products")
       .select("*")
       .eq("shop_id", data.shopId)
@@ -169,7 +169,7 @@ export const updateProduct = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     await assertShop(data.shopId, data.shopSlug);
-    const { error } = await admin
+    const { error } = await getAdmin()
       .from("lp_products")
       .update({
         name: data.name,
@@ -194,7 +194,7 @@ export const deleteProduct = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     await assertShop(data.shopId, data.shopSlug);
-    const { error } = await admin
+    const { error } = await getAdmin()
       .from("lp_products")
       .delete()
       .eq("id", data.productId)
@@ -208,7 +208,7 @@ export const getOffers = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => z.object({ shopId: z.string(), shopSlug: z.string() }).parse(d))
   .handler(async ({ data }) => {
     await assertShop(data.shopId, data.shopSlug);
-    const { data: products, error } = await admin
+    const { data: products, error } = await getAdmin()
       .from("lp_products")
       .select("id, name, slug, banner_url_1, rate, original_price")
       .eq("shop_id", data.shopId)
@@ -216,7 +216,7 @@ export const getOffers = createServerFn({ method: "POST" })
     if (error) throw new Error("Failed to fetch products");
 
     const productIds = products.map((p) => p.id);
-    const { data: offers, error: offerErr } = await admin
+    const { data: offers, error: offerErr } = await getAdmin()
       .from("lp_offers")
       .select("*")
       .in("product_id", productIds);
@@ -245,7 +245,7 @@ export const setOffer = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     await assertShop(data.shopId, data.shopSlug);
-    const { data: existing } = await admin
+    const { data: existing } = await getAdmin()
       .from("lp_offers")
       .select("id")
       .eq("product_id", data.productId)
@@ -253,7 +253,7 @@ export const setOffer = createServerFn({ method: "POST" })
 
     let error;
     if (existing) {
-      const result = await admin
+      const result = await getAdmin()
         .from("lp_offers")
         .update({ discount_price: data.discount_price, expires_at: data.expires_at })
         .eq("id", existing.id);
