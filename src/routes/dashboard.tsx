@@ -1122,7 +1122,7 @@ function ProductDrawer({
                   value={form.slug}
                   onChange={(e) => handleChange("slug", e.target.value.toLowerCase())}
                   required
-                  pattern="^[a-z0-9-]+$"
+                  pattern="^[a-z0-9\-]+$"
                   className="w-full rounded-2xl px-5 py-4 outline-none"
                   style={{ backgroundColor: "var(--bg-3)", border: "1px solid var(--border)", color: "var(--text)" }}
                 />
