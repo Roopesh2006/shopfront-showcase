@@ -5,7 +5,7 @@ function Box({ value, label }: { value: string; label: string }) {
   return (
     <div className="flex flex-col items-center">
       <div
-        className="flex h-14 w-16 items-center justify-center overflow-hidden rounded-xl"
+        className="flex h-11 w-12 sm:h-14 sm:w-16 items-center justify-center overflow-hidden rounded-lg sm:rounded-xl"
         style={{ backgroundColor: "var(--bg-3)", border: "1px solid var(--border)" }}
       >
         <AnimatePresence mode="popLayout">
@@ -15,14 +15,14 @@ function Box({ value, label }: { value: string; label: string }) {
             animate={{ rotateX: 0, opacity: 1 }}
             exit={{ rotateX: -90, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="text-2xl font-semibold tabular-nums"
+            className="text-lg sm:text-2xl font-semibold tabular-nums"
             style={{ color: "var(--accent)" }}
           >
             {value}
           </motion.span>
         </AnimatePresence>
       </div>
-      <span className="mt-1 text-[10px] uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>
+      <span className="mt-1 text-[9px] sm:text-[10px] uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>
         {label}
       </span>
     </div>

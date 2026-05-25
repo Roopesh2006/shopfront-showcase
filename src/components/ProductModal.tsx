@@ -38,15 +38,15 @@ export function ProductModal({
           exit={{ backgroundColor: "rgba(0,0,0,0)" }}
           transition={{ duration: 0.3 }}
           onClick={onClose}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center backdrop-blur-sm"
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 40 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 60 }}
             transition={{ type: "spring", stiffness: 400, damping: 35 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-[960px] max-h-[90vh] overflow-y-auto rounded-3xl"
+            className="relative w-full sm:max-w-[960px] sm:max-h-[90vh] max-h-[85vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl"
             style={{
               backgroundColor: "var(--bg-2)",
               border: "1px solid var(--border)",
@@ -61,8 +61,8 @@ export function ProductModal({
               <X size={22} />
             </button>
 
-            <div className="grid gap-0 md:grid-cols-2">
-              <div className="overflow-hidden md:rounded-l-3xl">
+            <div className="grid gap-0 sm:grid-cols-2">
+              <div className="overflow-hidden sm:rounded-l-3xl">
                 <img
                   src={product.banner_url_1 ?? ""}
                   alt={product.name}
@@ -99,7 +99,7 @@ function ModalDetails({ product, shop }: { product: Product; shop: Shop }) {
     : "#";
 
   return (
-    <div className="flex flex-col gap-5 p-6 md:p-10">
+    <div className="flex flex-col gap-4 p-5 sm:p-8 md:p-10">
       <p
         className="text-xs uppercase tracking-[0.18em]"
         style={{ color: "var(--text-muted)" }}
@@ -108,14 +108,14 @@ function ModalDetails({ product, shop }: { product: Product; shop: Shop }) {
       </p>
       <h2
         className="font-display"
-        style={{ fontSize: "clamp(26px, 4vw, 38px)", lineHeight: 1.1, letterSpacing: "-0.02em" }}
+        style={{ fontSize: "clamp(22px, 4vw, 38px)", lineHeight: 1.1, letterSpacing: "-0.02em" }}
       >
         {product.name}
       </h2>
 
       <div className="flex flex-wrap items-baseline gap-3">
         <span
-          className="text-3xl font-semibold"
+          className="text-2xl sm:text-3xl font-semibold"
           style={{ color: "var(--accent)" }}
         >
           {formatPrice(activePrice)}
@@ -143,7 +143,7 @@ function ModalDetails({ product, shop }: { product: Product; shop: Shop }) {
 
       {product.description && (
         <p
-          className="leading-relaxed"
+          className="text-sm sm:text-base leading-relaxed"
           style={{ color: "var(--text-muted)" }}
         >
           {product.description}
@@ -155,7 +155,7 @@ function ModalDetails({ product, shop }: { product: Product; shop: Shop }) {
           href={waHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 rounded-2xl py-4 font-medium text-white transition-all hover:-translate-y-0.5"
+          className="flex items-center justify-center gap-2 rounded-2xl py-3.5 sm:py-4 font-medium text-white transition-all hover:-translate-y-0.5"
           style={{
             backgroundColor: "var(--wa-green)",
             boxShadow: "0 8px 24px rgba(37,211,102,0.25)",
@@ -166,7 +166,7 @@ function ModalDetails({ product, shop }: { product: Product; shop: Shop }) {
         </a>
         <a
           href={mailHref}
-          className="flex items-center justify-center gap-2 rounded-2xl py-4 font-medium transition-colors hover:bg-white/5"
+          className="flex items-center justify-center gap-2 rounded-2xl py-3.5 sm:py-4 font-medium transition-colors hover:bg-white/5"
           style={{
             border: "1px solid var(--border)",
             color: "var(--text)",

@@ -14,11 +14,11 @@ function ShopName({ name }: { name: string }) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="font-display absolute bottom-12 left-8 md:left-16 text-white z-10"
+      className="font-display absolute bottom-8 left-6 md:bottom-12 md:left-16 text-white z-10 px-2 md:px-0"
       style={{
-        fontSize: "clamp(40px, 7vw, 72px)",
+        fontSize: "clamp(32px, 7vw, 72px)",
         letterSpacing: "-0.02em",
-        lineHeight: 1,
+        lineHeight: 1.1,
       }}
     >
       {name}
@@ -28,7 +28,7 @@ function ShopName({ name }: { name: string }) {
 
 function SingleBannerHero({ src, name }: { src: string; name: string }) {
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative h-[60vh] sm:h-[70vh] md:h-screen w-full overflow-hidden">
       <motion.img
         src={src}
         alt={name}
@@ -53,7 +53,7 @@ function TwoBannerCarousel({ a, b, name }: { a: string; b: string; name: string 
   }, []);
 
   return (
-    <section className="group relative h-screen w-full overflow-hidden">
+    <section className="group relative h-[60vh] sm:h-[70vh] md:h-screen w-full overflow-hidden">
       <AnimatePresence mode="sync">
         <motion.img
           key={i}
@@ -71,20 +71,20 @@ function TwoBannerCarousel({ a, b, name }: { a: string; b: string; name: string 
 
       <button
         onClick={() => setI((p) => (p - 1 + banners.length) % banners.length)}
-        className="absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-sm"
+        className="absolute left-3 top-1/2 z-20 flex h-10 w-10 md:h-12 md:w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-sm md:left-4"
         aria-label="Previous"
       >
-        <ChevronLeft size={24} />
+        <ChevronLeft size={20} />
       </button>
       <button
         onClick={() => setI((p) => (p + 1) % banners.length)}
-        className="absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-sm"
+        className="absolute right-3 top-1/2 z-20 flex h-10 w-10 md:h-12 md:w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-sm md:right-4"
         aria-label="Next"
       >
-        <ChevronRight size={24} />
+        <ChevronRight size={20} />
       </button>
 
-      <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+      <div className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-2">
         {banners.map((_, idx) => (
           <button
             key={idx}
@@ -108,7 +108,7 @@ export function BannerSection({ shop }: { shop: Shop }) {
   if (a && b) return <TwoBannerCarousel a={a} b={b} name={shop.name} />;
   if (a) return <SingleBannerHero src={a} name={shop.name} />;
   return (
-    <section className="relative h-screen w-full" style={{ backgroundColor: "var(--bg-2)" }}>
+    <section className="relative h-[60vh] sm:h-[70vh] md:h-screen w-full" style={{ backgroundColor: "var(--bg-2)" }}>
       <ShopName name={shop.name} />
     </section>
   );
